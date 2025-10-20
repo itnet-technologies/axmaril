@@ -1,0 +1,10 @@
+10.0.1.194 - - [20/Mar/2025:11:55:48 +0100] "GET /guacamole/api/languages HTTP/1.1" 200 244
+10.0.1.194 - - [20/Mar/2025:11:55:48 +0100] "GET /guacamole/api/patches HTTP/1.1" 200 340
+10.0.1.194 - - [20/Mar/2025:11:55:49 +0100] "GET /guacamole/translations/en.json HTTP/1.1" 200 48945
+10.0.1.194 - - [20/Mar/2025:11:55:49 +0100] "GET /guacamole/translations/fr.json HTTP/1.1" 200 49975
+10.0.1.194 - - [20/Mar/2025:11:55:49 +0100] "POST /guacamole/api/tokens HTTP/1.1" 403 257
+10.0.1.194 - - [20/Mar/2025:11:57:22 +0100] "POST /guacamole/api/tokens HTTP/1.1" 403 257
+10.0.1.194 - - [20/Mar/2025:11:57:22 +0100] "GET /guacamole/api/languages HTTP/1.1" 200 244
+10.0.1.194 - - [20/Mar/2025:11:57:22 +0100] "GET /guacamole/api/patches HTTP/1.1" 200 340
+10.0.1.194 - - [20/Mar/2025:11:57:22 +0100] "GET /guacamole/translations/en.json HTTP/1.1" 200 48945
+10.0.1.194 - - [20/Mar/2025:11:57:22 +0100] "GET /guacamole/translations/fr.json HTTP/1.1" 200 49975

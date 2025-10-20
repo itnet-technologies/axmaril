@@ -1,0 +1,161 @@
+**********************************************************************
+                ENVIRONEMENT VARIABLES LIST
+**********************************************************************
+
+RAFT_HOST
+    Description: Host or IP address along with the associated port of the current server.
+    Example: export RAFT_HOST=localhost:6000
+
+RAFT_PARTNERS
+    Description: Host or IP address with the associated port of other servers.
+    Example: export RAFT_PARTNERS=localhost:6001,localhost:6002
+
+IAPP_PORT
+    Description: Port of Azumaril initialization app. Default is set to 54321.
+    Example: export IAPP_PORT=54322
+
+AZKEYS
+    Description: Shamir keys used for unsealing. If there are multiple keys, separate them by commas.
+    Example: export AZKEYS=key1,key2
+
+AZUMARIL_KEYS
+    Description: Similar to AZKEYS but for Azumaril startup.
+    Example: export AZUMARIL_KEYS="key1,key2"
+
+AZUMARIL_INITIATOR_DBPATH
+    Description: Path of Azumaril initialization data.
+    Example: export AZUMARIL_INITIATOR_DBPATH=/home/shamir
+
+
+**********************************************************************
+                AZUMARIL RAFT USAGE
+**********************************************************************
+
+prerequisites:
+    - When using azumaril raft all the node must be accessed between each other.
+    - A minimal number of server must be alive in order to have a leader.
+    - All the database of the servers could be accessed between each other.
+    - All the initalisation app could be accessed between each other.
+    - Not possible to join a cluster with no leader yet.
+    - To have a leader at least two server must be up.
+    - To dynamicaly add a node to a cluster a leader must be up.
+
+    All of this could be settled in the firewall by using command line ufw like this in linux:
+
+        #allowing connections to database port
+        sudo ufw allow from server_B_ip_address to any port 27017
+        sudo ufw allow from server_C_ip_address to any port 27017
+
+        #allowing connections to raft port
+        sudo ufw allow from server_B_ip_address to any port 6000
+        sudo ufw allow from server_C_ip_address to any port 6000
+
+        #allowing connections to initialisation app port
+        sudo ufw allow from server_B_ip_address to any port 54321
+        sudo ufw allow from server_C_ip_address to any port 54321
+
+        #reloading the firewall rules
+        sudo ufw reload
+
+SCENARIO 1 : CREATE A CULSTER
+
+    Let's create a cluster of 3 servers A,B and C. 
+    Like said earlier, at least two servers must be up in order to have a leader and add C dynamicaly.
+
+    * Command to run in the first server A
+    1 - export RAFT_HOST=server_A_ip_address:port 
+    2 - export RAFT_PARTNERS=server_B_ip_address:port,server_C_ip_address:port 
+    3 - azumaril --start-cluster 
+
+    * Command to run in the second server B
+    1 - export RAFT_HOST=server_B_ip_address:port 
+    2 - export RAFT_PARTNERS=server_A_ip_address:port,server_C_ip_address:port
+    3 - azumaril --mode-cluster
+
+
+SCENARIO 2 : JOIN A CULSTER
+
+    Let's assume that there is already a cluster and it is the one we created in the SCENARIO 1 and the leader of this cluster is server A
+    so let's join this cluster 
+
+    * Command to run in the third server C
+    1 - azumaril --mode-cluster
+    2 - azumaril --add-node server_C_ip_address:port --to-leader https://server_A_ip_address:IAPP_PORT --leader-rhost server_A_ip_address:port 
+
+SCENARIO 3 : REMOVE A NODE TO A CLUSTER
+
+    Let's assume that there is already a cluster and it is the one we created in the SCENARIO 1 and the leader of this cluster is server A
+    so let's remove the node from the cluster from the leader. If we are not in the leader we can just start azumaril without cluster mode 
+ 
+    .....
+
+Note :
+    - When azumaril had been run once some raft configuration might be kept saved in the database so next time it's not necessary to reconfig
+      for example if export RAFT_HOST=server_A_ip_address:port was made RAFT_HOST will be saved in the database also as the host
+
+    - The flag --raft-config will print the configuration informations
+
+**********************************************************************
+                AZUMARIL SAVE/LOAD DATA
+**********************************************************************
+
+prerequisites:
+    - shamir keys are required when saving
+
+    * Save data
+    1 - azumaril --save-data --zip-name (optional when)
+
+    * Load data
+    1 - azumaril --load-data /path/to/zip_file.zip
+
+
+
+
+**********************************************************************
+                AZUMARIL FLAGS OPTIONS PARAMETERS
+**********************************************************************
+
+-h, --help            show this help message and exit
+--debug               Use flask debug/dev mode with file change reloading
+--start-cluster       Start azumaril as a cluster
+--save-data           Save all the data of azumaril in a zip file
+--mode-cluster        Join an existing cluster
+-acd, --add-config, --no-add-config
+                    add/modify config varibale
+-gcd, --get-config, --no-get-config
+                    get config varibale
+-d DATA, --data DATA  the variable data to add (LDAP : true)
+-file CONFIG_FILE_PATH, --config-file-path CONFIG_FILE_PATH
+                    the path of the config file
+-an ADD_NODE, --add-node ADD_NODE
+                    the nodes. eg (server1:port,server2:port)
+-tl TO_LEADER, --to-leader TO_LEADER
+                    th leader host if not executing in the leader
+-lrh LEADER_RHOST, --leader-rhost LEADER_RHOST
+                    th leader host if not executing in the leader
+-load LOAD_DATA, --load-data LOAD_DATA
+                    load all the data
+-name ZIP_NAME, --zip-name ZIP_NAME
+                    the zip file path
+-azpath AZUMARIL_DBPATH, --azumaril-dbpath AZUMARIL_DBPATH
+                    the path where we want to store azumaril data
+-shpath SHAMIR_DBPATH, --shamir-dbpath SHAMIR_DBPATH
+                    the path where we want to store shamir data
+-rn REMOVE_NODE, --remove-node REMOVE_NODE
+                    the nodes. eg (server1:port,server2:port)
+-reset, --reset-shamir, --no-reset-shamir
+                    reset shamir app
+-state, --status, --no-status
+                    get the state of azumaril process in the moment
+-s, --seal, --no-seal
+                    reset shamir app
+-u, --unseal, --no-unseal
+                    reset shamir app
+-n, --nothing, --no-nothing
+                    used when refreshing
+-i, --init, --no-init
+                    initialize azumaril
+-update, --update-last-stable, --no-update-last-stable
+                    update altara to the last stable version
+-last, --update-last-dev, --no-update-last-dev
+                    update altara to the very last version which can have some bugs

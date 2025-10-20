@@ -1,0 +1,501 @@
+[{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "RegisterLdap",
+  "code": "azumaril_001"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "RegisterLdap",
+  "code": "azumaril_002"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "RegisterLdap",
+  "code": "azumaril_003"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "RegisterLdap",
+  "code": "azumaril_004"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "ldap_connect",
+  "code": "azumaril_005"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "ldap_connect",
+  "code": "azumaril_006"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "ldap_connect",
+  "code": "azumaril_007"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "ldap_connect",
+  "code": "azumaril_008"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "ldap_deconnect",
+  "code": "azumaril_009"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "ldap_deconnect",
+  "code": "azumaril_010"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "ldap_deconnect",
+  "code": "azumaril_011"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "ldap_deconnect",
+  "code": "azumaril_012"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "change_password",
+  "code": "azumaril_013"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "change_password",
+  "code": "azumaril_014"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "change_password",
+  "code": "azumaril_015"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "change_password",
+  "code": "azumaril_016"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "change_password_token",
+  "code": "azumaril_017"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "change_password_token",
+  "code": "azumaril_018"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "change_password_token",
+  "code": "azumaril_019"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "change_password_token",
+  "code": "azumaril_020"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "forgot_password",
+  "code": "azumaril_021"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "forgot_password",
+  "code": "azumaril_022"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "forgot_password",
+  "code": "azumaril_023"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "forgot_password",
+  "code": "azumaril_024"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "admin_change_password",
+  "code": "azumaril_025"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "admin_change_password",
+  "code": "azumaril_026"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "admin_change_password",
+  "code": "azumaril_027"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "admin_change_password",
+  "code": "azumaril_028"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "register_2fa",
+  "code": "azumaril_029"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "register_2fa",
+  "code": "azumaril_030"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "register_2fa",
+  "code": "azumaril_031"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "register_2fa",
+  "code": "azumaril_032"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "ldap_2fa",
+  "code": "azumaril_033"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "ldap_2fa",
+  "code": "azumaril_034"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "ldap_2fa",
+  "code": "azumaril_035"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "ldap_2fa",
+  "code": "azumaril_036"
+},{
+  "type": "success",
+  "module": "ldapauth",
+  "function": "updateUser",
+  "code": "azumaril_037"
+},{
+  "type": "warning",
+  "module": "ldapauth",
+  "function": "updateUser",
+  "code": "azumaril_038"
+},{
+  "type": "debug",
+  "module": "ldapauth",
+  "function": "updateUser",
+  "code": "azumaril_039"
+},{
+  "type": "error",
+  "module": "ldapauth",
+  "function": "updateUser",
+  "code": "azumaril_040"
+},{
+  "type": "success",
+  "module": "password",
+  "function": "update_pass",
+  "code": "azumaril_041"
+},{
+  "type": "warning",
+  "module": "password",
+  "function": "update_pass",
+  "code": "azumaril_042"
+},{
+  "type": "debug",
+  "module": "password",
+  "function": "update_pass",
+  "code": "azumaril_043"
+},{
+  "type": "error",
+  "module": "password",
+  "function": "update_pass",
+  "code": "azumaril_044"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "create_app",
+  "code": "azumaril_045"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "create_app",
+  "code": "azumaril_046"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "create_app",
+  "code": "azumaril_047"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "create_app",
+  "code": "azumaril_048"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "update_secret",
+  "code": "azumaril_049"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "update_secret",
+  "code": "azumaril_050"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "update_secret",
+  "code": "azumaril_051"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "update_secret",
+  "code": "azumaril_052"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "delete_secret",
+  "code": "azumaril_053"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "delete_secret",
+  "code": "azumaril_054"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "delete_secret",
+  "code": "azumaril_055"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "delete_secret",
+  "code": "azumaril_056"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "get_secrets",
+  "code": "azumaril_057"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "get_secrets",
+  "code": "azumaril_058"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "get_secrets",
+  "code": "azumaril_059"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "get_secrets",
+  "code": "azumaril_060"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "safe_create",
+  "code": "azumaril_061"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "safe_create",
+  "code": "azumaril_062"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "safe_create",
+  "code": "azumaril_063"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "safe_create",
+  "code": "azumaril_064"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "safe_all",
+  "code": "azumaril_065"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "safe_all",
+  "code": "azumaril_066"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "safe_all",
+  "code": "azumaril_067"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "safe_all",
+  "code": "azumaril_068"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "safe_secrets",
+  "code": "azumaril_069"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "safe_secrets",
+  "code": "azumaril_070"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "safe_secrets",
+  "code": "azumaril_071"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "safe_secrets",
+  "code": "azumaril_072"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "secretTypes",
+  "code": "azumaril_073"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "secretTypes",
+  "code": "azumaril_074"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "secretTypes",
+  "code": "azumaril_075"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "secretTypes",
+  "code": "azumaril_076"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "user_safe_all",
+  "code": "azumaril_077"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "user_safe_all",
+  "code": "azumaril_078"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "user_safe_all",
+  "code": "azumaril_079"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "user_safe_all",
+  "code": "azumaril_080"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "propagate",
+  "code": "azumaril_081"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "propagate",
+  "code": "azumaril_082"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "propagate",
+  "code": "azumaril_083"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "propagate",
+  "code": "azumaril_084"
+},{
+  "type": "success",
+  "module": "secret",
+  "function": "propagate_history",
+  "code": "azumaril_085"
+},{
+  "type": "warning",
+  "module": "secret",
+  "function": "propagate_history",
+  "code": "azumaril_086"
+},{
+  "type": "debug",
+  "module": "secret",
+  "function": "propagate_history",
+  "code": "azumaril_087"
+},{
+  "type": "error",
+  "module": "secret",
+  "function": "propagate_history",
+  "code": "azumaril_088"
+},{
+  "type": "success",
+  "module": "applications",
+  "function": "create_app",
+  "code": "azumaril_089"
+},{
+  "type": "warning",
+  "module": "applications",
+  "function": "create_app",
+  "code": "azumaril_090"
+},{
+  "type": "debug",
+  "module": "applications",
+  "function": "create_app",
+  "code": "azumaril_091"
+},{
+  "type": "error",
+  "module": "applications",
+  "function": "create_app",
+  "code": "azumaril_092"
+},{
+  "type": "success",
+  "module": "applications",
+  "function": "delete_app",
+  "code": "azumaril_093"
+},{
+  "type": "warning",
+  "module": "applications",
+  "function": "delete_app",
+  "code": "azumaril_094"
+},{
+  "type": "debug",
+  "module": "applications",
+  "function": "delete_app",
+  "code": "azumaril_095"
+},{
+  "type": "error",
+  "module": "applications",
+  "function": "delete_app",
+  "code": "azumaril_096"
+},{
+  "type": "success",
+  "module": "applications",
+  "function": "getApp",
+  "code": "azumaril_097"
+},{
+  "type": "warning",
+  "module": "applications",
+  "function": "getApp",
+  "code": "azumaril_098"
+},{
+  "type": "debug",
+  "module": "applications",
+  "function": "getApp",
+  "code": "azumaril_099"
+},{
+  "type": "error",
+  "module": "applications",
+  "function": "getApp",
+  "code": "azumaril_100"
+}]

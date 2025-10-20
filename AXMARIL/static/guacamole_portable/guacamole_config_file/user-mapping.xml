@@ -1,0 +1,12 @@
+<user-mapping>
+    <!-- Définition de l'utilisateur admin local -->
+    <authorize username="bankchoukourath@gmail.com" password="J'M@X2tmK_ $2mv3">
+        <param name="guac-admin" value="true"/>
+    </authorize>
+    <authorize username="axetag21@gmail.com" password="Hav*1cha">
+        <param name="guac-admin" value="true"/>
+    </authorize>
+    <authorize username="aogoula" password="Aogoul@36216">
+        <param name="guac-admin" value="true"/>
+    </authorize>
+</user-mapping>

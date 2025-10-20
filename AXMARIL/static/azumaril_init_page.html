@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask App</title>
+    <script src="https://kit.fontawesome.com/4c78573d3e.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: height 0.5s;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        .input-fields {
+            display: none;
+            margin-bottom: 20px;
+            transition: opacity 0.5s;
+        }
+
+        input[type="number"], button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        input[type="number"]::placeholder {
+            color: #999;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        input[type="text"], button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .fa-icon {
+            margin-right: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .copy-btn {
+            display: block;
+            margin: 0 auto;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+
+        .blink {
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+        .seal-unseal-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .seal-btn,
+        .unseal-btn {
+            display: inline-block;
+            vertical-align: middle;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .seal-btn {
+            background-color: #4CAF50;
+            color: white;
+            margin-right: 10px; /* Add margin to separate the buttons */
+        }
+        
+        .unseal-btn {
+            background-color: #FF5733;
+            color: white;
+        }
+        
+        .seal-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .unseal-btn:hover {
+            background-color: #d13b12;
+        }
+        
+        .seal-unseal-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            display: inline-block;
+            vertical-align: middle;
+            width: 150px; /* Set a fixed width for all buttons */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .seal-btn {
+            background-color: #FF5733;
+            color: white;
+            margin-right: 10px; /* Add margin to separate the buttons */
+        }
+        
+        .unseal-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .button:hover {
+            filter: brightness(110%); /* Lighten the button on hover */
+        }
+        
+
+        .container2 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .seal-unseal-buttons {
+            display: flex;
+            justify-content: space-between; /* Distribute items evenly along the main axis */
+            width: 100%; /* Ensure full width */
+            margin-bottom: 20px; /* Add space between the buttons and the form */
+        }
+        
+        .seal-unseal-buttons form {
+            flex: 1; /* Allow forms to grow and shrink */
+        }
+        
+        #formContainer2 {
+            width: 100%;
+            text-align: center; /* Center align the form */
+        }
+        
+        .center-button {
+            text-align: center;
+            width: 100%;
+            margin-top: 10px; /* Adjust margin as needed */
+        }
+        
+        .center-button button {
+            width: 100%;
+        }
+        .center-table {
+            margin: 0 auto;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+    
+        .close-icon {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    
+        .add-field-btn:hover {
+            background-color: #ddd;
+        }
+    
+        .close-icon:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="lockStatus"><i class="fas fa-lock"></i> AZUMARIL INITIATOR APP</h1>
+        <!-- <h1> <i class="fas fa-lock"></i> AZUMARIL Flask App</h1> -->
+        <form action="/initialize" method="POST" id="initialize-form">
+            <button type="button" onclick="toggleForm()"><i class="fas fa-cogs fa-icon"></i>    Initialize</button>
+        </form>
+
+        <div class="input-fields" id="input-fields">
+            <form id="input-form">
+                <input type="number" name="max_keys" id="max_keys" placeholder="Maximum keys for sealing"><br>
+                <input type="number" name="min_keys" id="min_keys" placeholder="Minimum keys for unsealing"><br>
+                <button type="submit" onclick="submitForm(event)">Submit</button>
+            </form>
+        </div>
+
+        <!-- Container for centered button -->
+        <div class="center-button">
+            <button type="button" onclick="addField()"><i class="fas fa-plus add-field-btn"></i> Add Configuration Variable</button>
+            <i id  = "rf" class="fas fa-times close-icon" onclick="removeField()"></i>
+        </div>
+
+         <!-- Dynamic form -->
+    <div class="input-fields" id="dynamic-form" style="display: none;">
+        <!-- Table for layout -->
+        <table id="fields-table" class="center-table">
+            <!-- Table body -->
+            <tbody>
+                <!-- Initial row with key and value input fields -->
+                <tr id="row1">
+                    <td><input type="text" name="key1" placeholder="Key"></td>
+                    <td><input type="text" name="value1" placeholder="Value"></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Submit button -->
+        <div id = "sc">
+            <button class="center-button"  type="button" onclick="submitConfig()"><i class="fas fa-save"></i> Submit Configuration</button>
+        </div>
+        <!-- Checkbox for oneFile -->
+        <div class="center-button submit-section" id = "ofc">
+            <input type="checkbox" id="one-file-checkbox" onchange="toggleOneFile()">
+            <label  for="one-file-checkbox">Use It As One File</label>
+        </div>
+    </div>
+    <button class="center-button" type="button" onclick="showConfiguration()"><i class="fas fa-eye"></i> Show Configuration</button>
+            
+        <div class="container2">
+            <div class="seal-unseal-buttons">
+                <form action="/unseal" method="POST" id="unseal-form">
+                    <button class="unseal-btn" type="submit"><i class="fas fa-unlock fa-icon"></i>  Unseal</button>
+                </form>
+                <form action="/seal" method="POST" id="seal-form">
+                    <button class="seal-btn" type="submit"><i class="fas fa-lock fa-icon"></i>  Seal</button>
+                </form>
+                <form action="/reset" method="POST" id="reset-form">
+                    <button class="seal-btn" type="submit"><i class="fa-solid fa-arrows-rotate"></i>  Reset</button>
+                </form>
+            </div>
+    
+            <div id="formContainer2" style="display: none;">
+                <form id="dynamicForm">
+                    <!-- Fields will be dynamically added here -->
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="open-webapp" id="openWebappButton" style="display: none;">
+            <button onclick="openAzumarilWebapp('{{ azumaril_link }}')">
+                <i class="fas fa-external-link-alt"></i> <!-- Redirect icon -->
+                Open AZUMARIL Web App
+            </button>
+        </div>
+
+        <div class="result" id="result"></div>
+
+        <!-- Dynamic form -->
+    <div class="input-fields" id="dynamic-form" style="display: none;">
+        <!-- Table for layout -->
+        <table id="fields-table" class="center-table">
+            <!-- Table body -->
+            <tbody>
+                <!-- Initial row with two input fields -->
+                <tr>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="warning blink"><i class="fas fa-exclamation-triangle"></i>Warning: This will be displayed just once, so make sure to save it somewhere</div>
+            <p id="modal-message"></p>
+            <button class="copy-btn" onclick="copyKeys()">Copy Keys</button>
+        </div>
+    </div>
+
+    <script>
+        function removeField() {
+            if (rowCount == 1){
+                var ofc = document.getElementById("ofc");
+                var sc = document.getElementById("sc");
+                var rf = document.getElementById("rf");
+                rf.style.display = "none";
+                sc.style.display = "none";
+                ofc.style.display = "none";
+            }
+            if (rowCount >= 1) {
+                var rowToRemove = document.getElementById("row" + rowCount);
+                rowToRemove.remove();
+                rowCount--;
+            }
+        }
+        // Function to submit configuration
+    function submitConfig() {
+        showDynamicForm("config")
+    }
+
+    function showConfiguration() {
+        showDynamicForm("config-get")
+    }
+        // Counter to keep track of row count
+    var rowCount = 1;
+
+    // Function to add a new key-value pair to the dynamic form
+    function addField() {
+        var ofc = document.getElementById("ofc");
+        var sc = document.getElementById("sc");
+        var rf = document.getElementById("rf");
+        rf.style.display = "block";
+        sc.style.display = "block";
+        ofc.style.display = "block";
+        var dynamicForm = document.getElementById("dynamic-form");
+        //dynamicForm.style.display = (dynamicForm.style.display === "block") ? "none" : "block";
+        dynamicForm.style.display = "block";
+        rowCount++; // Increment row count
+        var fieldsTable = document.getElementById("fields-table").getElementsByTagName('tbody')[0];
+        var newRow = document.createElement('tr');
+        newRow.id = "row" + rowCount; // Assign unique ID to the new row
+        newRow.innerHTML = `
+            <td><input type="text" name="key${rowCount}" placeholder="Key"></td>
+            <td><input type="text" name="value${rowCount}" placeholder="Value"></td>
+        `;
+        fieldsTable.appendChild(newRow);
+    }
+        function toggleDynamicForm() {
+            var dynamicForm = document.getElementById("dynamic-form");
+            dynamicForm.style.display = (dynamicForm.style.display === "block") ? "none" : "block";
+        }
+        // Function to fetch app state and show/hide the button
+        async function fetchAppStateAndToggleButton() {
+            try {
+                const response = await fetch("{{ app_state_endpoint }}"); // Replace with the actual endpoint
+                const data = await response.json();
+                
+                if (data.seal === false) {
+                    document.getElementById("openWebappButton").style.display = "block";
+                } else {
+                    document.getElementById("openWebappButton").style.display = "none";
+                }
+            } catch (error) {
+                console.error("Error fetching app state:", error);
+            }
+        }
+
+        // Call the function when the page loads
+        fetchAppStateAndToggleButton();
+
+
+        document.getElementById("seal-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            showDynamicForm("seal");
+        });
+
+        document.getElementById("unseal-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            showDynamicForm("unseal");
+        });
+
+        document.getElementById("reset-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            showDynamicForm("reset");
+        });
+
+        function openAzumarilWebapp(link) {
+            window.open(link, "_blank");
+        }
+
+        function showDynamicForm(action) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/app-state", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        generateForm(response.minkey, action);
+                    } else {
+                        console.error("Failed to fetch app state");
+                    }
+                }
+            };
+            xhr.send();
+        }
+        
+
+        function generateForm(numFields, action) {
+            var formContainer = document.getElementById("formContainer2");
+            var dynamicForm = document.getElementById("dynamicForm");
+            
+            // If the form is currently displayed, hide it
+            if (formContainer.style.display === "block") {
+                formContainer.style.display = "none";
+                return; // Exit the function early
+            }
+            
+            dynamicForm.innerHTML = ""; // Clear previous form fields
+            dynamicForm.setAttribute("action", action);
+            
+            for (var i = 1; i <= numFields; i++) {
+                var inputField = document.createElement("input");
+                inputField.setAttribute("type", "text");
+                inputField.setAttribute("name", "key" + i);
+                inputField.setAttribute("placeholder", "Key " + i);
+                var br = document.createElement("br");
+                dynamicForm.appendChild(inputField);
+                dynamicForm.appendChild(br);
+            }
+            
+            // Add submit button
+            var submitButton = document.createElement("button");
+            submitButton.textContent = "Submit";
+            submitButton.type = "button"; // Use type="button" to prevent form submission
+            submitButton.addEventListener("click", function() {
+                submitFormData(action);
+            });
+            dynamicForm.appendChild(submitButton);
+            
+            // Show the form container
+            formContainer.style.display = "block";
+        }
+        
+        
+        function submitFormData(action) {
+            var dynamicForm = document.getElementById("dynamicForm");
+            var formData = new FormData(dynamicForm);
+        
+            // Extract keys from form data
+            var keys = [];
+            for (var pair of formData.entries()) {
+                keys.push(pair[1]);
+            }
+        
+            var formData = {};
+            for (var i = 1; i <= rowCount; i++) {
+                var key = document.querySelector(`[name="key${i}"]`).value;
+                var value = document.querySelector(`[name="value${i}"]`).value;
+                formData[key] = value;
+            }
+            var oneFile = document.getElementById('one-file-checkbox').checked;
+            // Create payload
+            var payload = {
+                keys: keys,
+                oneFile:oneFile,
+                config_data: formData
+            };
+        
+            // Make a POST request based on the action
+            var endpoint = "";
+            switch (action) {
+                case "seal":
+                    endpoint = "/seal";
+                    break;
+                case "config":
+                    endpoint = "/config";
+                    break;
+                case "config-get":
+                    endpoint = "/config-get";
+                    break;
+                case "unseal":
+                    endpoint = "/unseal";
+                    break;
+                case "reset":
+                    endpoint = "/reset";
+                    break;
+                default:
+                    console.error("Invalid action");
+                    return;
+            }
+            if (action === "config-get"){
+                var jsonData = JSON.stringify(payload);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/config-get", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            document.getElementById("result").innerText = response.message;
+                            openModal2(response.data);
+                        } else {
+                            var response = JSON.parse(xhr.responseText);
+                            document.getElementById("result").innerText = "Error: " + response.message;
+                        }
+                    }
+                };
+
+                xhr.send(jsonData);
+            }else{
+                fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Handle successful response
+                        console.log("Request successful");
+                        console.log(response);
+                        if (action === "config") {
+                            alert("Added to configurations");
+                        }
+                        if (action === "unseal") {
+                            const currentUrl = new URL(window.location.href);
+                            currentUrl.port = "{{ front_port }}";
+                            window.open(currentUrl.href, "_blank");
+                        }
+                    } else {
+                        // Handle error response
+                        alert("request failed");
+                        console.error("Request failed");
+                    }
+                })
+                .catch(error => {
+                    // Handle network error
+                    console.error("Network error:", error);
+                });
+            }
+            
+        }
+        
+        // Function to handle form submission
+        function handleSubmit(event, action) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Gather values of all fields in the form
+            var form = document.getElementById("dynamicForm");
+            var formData = new FormData(form);
+            
+            // Construct JSON payload
+            var payload = {};
+            formData.forEach(function(value, key){
+                payload[key] = value;
+            });
+            
+            // Make a POST request to the appropriate endpoint
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/" + action, true); // Use the provided action (seal/unseal/reset)
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        // Handle successful response
+                        console.log("Request successful:", response);
+                    } else {
+                        // Handle error response
+                        console.error("Error:", xhr.statusText);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(payload));
+        }
+
+        // Example usage:
+        // Assuming you have buttons with onclick handlers calling handleSubmit(action)
+        // where action is "seal", "unseal", or "reset"
+        // Example: <button onclick="handleSubmit('seal')">Seal</button>
+        // Example: <button onclick="handleSubmit('unseal')">Unseal</button>
+        // Example: <button onclick="handleSubmit('reset')">Reset</button>
+
+        function toggleForm() {
+            var form = document.getElementById("input-fields");
+            form.style.display = (form.style.display === "block") ? "none" : "block";
+            form.style.opacity = (form.style.opacity === "1") ? "0" : "1";
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            
+            var minKeys = document.getElementById("min_keys").value;
+            var maxKeys = document.getElementById("max_keys").value;
+            var jsonData = JSON.stringify({ "minkey": minKeys, "maxkey": maxKeys });
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/initialise", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        document.getElementById("result").innerText = response.message;
+                        openModal(response);
+                    } else {
+                        var response = JSON.parse(xhr.responseText);
+                        document.getElementById("result").innerText = "Error: " + response.message;
+                    }
+                }
+            };
+
+            xhr.send(jsonData);
+        }
+
+        function openModal2(response) {
+            var modal = document.getElementById("myModal");
+            var modalMessage = document.getElementById("modal-message");
+            modal.style.display = "block";
+        
+            // Convert the JSON data to a formatted string
+            var jsonData = JSON.stringify(response, null, 4);
+        
+            // Create a <pre> element to display the formatted JSON
+            var jsonHtml = `<strong>Configuration:</strong><br><pre>${jsonData}</pre>`;
+        
+            // Update the modal message with the HTML content
+            modalMessage.innerHTML = jsonHtml;
+        }
+        
+
+        function openModal(response) {
+            var modal = document.getElementById("myModal");
+            var modalMessage = document.getElementById("modal-message");
+            modal.style.display = "block";
+            
+            var keysHtml = "<strong>Keys:</strong><br>";
+            response.keys.forEach(function(key) {
+                keysHtml += key + "<br>";
+            });
+            keysHtml += "<br>";
+            keysHtml += "<br>";
+            var superAdminCredsHtml = `
+                <strong>Super Admin Credentials:</strong><br>
+                Email: ${response.super_admin_creds.email}<br>
+                UID: ${response.super_admin_creds.uid}<br>
+                Password: ${response.super_admin_creds.password}<br>
+            `;
+            modalMessage.innerHTML = keysHtml + superAdminCredsHtml;
+        }
+
+        
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+    
+
+        function copyKeys() {
+            var keys = document.getElementById("modal-message").innerText;
+            console.log(keys);
+            const textArea = document.createElement("textarea");
+            textArea.value = keys;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              alert("Keys copied to clipboard!");
+            } catch (err) {
+              console.error('Unable to copy to clipboard', err);
+            }
+            document.body.removeChild(textArea);
+          }
+        
+        window.addEventListener('click', function(event) {
+            var modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        setInterval(function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/app-state", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        updateLockStatus(response.seal);
+                    } else {
+                        console.error("Failed to fetch seal status");
+                    }
+                }
+            };
+            xhr.send();
+        }, 8000);
+
+        function updateLockStatus(sealed) {
+            var lockStatus = document.getElementById("lockStatus");
+            var lockIcon = lockStatus.querySelector("i");
+            if (sealed) {
+                lockIcon.classList.remove("fa-unlock");
+                lockIcon.classList.add("fa-lock");
+            } else {
+                lockIcon.classList.remove("fa-lock");
+                lockIcon.classList.add("fa-unlock");
+            }
+        }
+    </script>
+
+</body>
+</html>

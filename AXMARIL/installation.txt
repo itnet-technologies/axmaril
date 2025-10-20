@@ -1,0 +1,24 @@
+#unzip-------------------------------------------
+tar -xzf axmaril_stable.tar.gz 
+
+#create & activate virtual env-------------------
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+#open 2 terminal---------------------------------
+
+#terminal 1 to see the logs output
+python app.py
+
+#terminal 2 to --init/--add-config -file /--unseal/--get-config
+python app.py --init
+python app.py --add-config -file path
+python app.py --unseal 
+
+NB : you can do this to not have to unseal everytime you run the app
+echo 'export AZUMARIL_KEYS="key1,key2"' >> ~/.bashrc
+source ~/.bashrc
+
+
+

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Terminal</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+        }
+        #terminal {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        #input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+    <input type="text" id="input" placeholder="Type your command here...">
+    <script>
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('input');
+        const ws = new WebSocket('ws://10.0.1.16:5007/ssh/live?secret_id=665088692d54e675c9c12e25&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTcxNTcyMDgsImlhdCI6MTcxNjU1OTYwOCwic3ViIjoiMDAwMDExMyJ9.eXKVmdDsm8YuIdkEpIOngJwF5gWqSFm7o7nwCpS6QN0');
+
+        ws.onopen = function() {
+            log('Connected to WebSocket server');
+        };
+
+        ws.onmessage = function(event) {
+            log('Received: ' + event.data);
+        };
+
+        function log(message) {
+            terminal.innerHTML += message + '<br>';
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        input.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                const command = input.value.trim();
+                if (command !== '') {
+                    ws.send(command);
+                    log('Sent: ' + command);
+                    input.value = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2374 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "sean",
+        "version": "1.0.0",
+        "title": "Seans-Python3-Flask-Rest-Boilerplate",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "/api/v1"
+        },
+        {
+            "url": "/api/v2"
+        }
+    ],
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "LDAP"
+                ],
+                "summary": "register request",
+                "requestBody": {
+                    "description": "register Request Post Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ldap_Register"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/registerRequest"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "LDAP"
+                ],
+                "summary": "User authentication",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/authentication"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/authentication"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/auth/activation": {
+            "put": {
+                "tags": [
+                    "LDAP"
+                ],
+                "summary": "Account activation",
+                "description": "Activate a user account using the activation code received by email",
+                "requestBody": {
+                    "description": "Account activation request",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "uid",
+                                    "activation_code"
+                                ],
+                                "properties": {
+                                    "uid": {
+                                        "type": "string",
+                                        "description": "User identifier",
+                                        "example": "0000001"
+                                    },
+                                    "activation_code": {
+                                        "type": "string",
+                                        "description": "Activation code received by email",
+                                        "example": "663304"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Account successfully activated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "meassage": {
+                                            "type": "string",
+                                            "example": "Account successfully activated"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "description": "JWT authentication token",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "uid": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "firstname": {
+                                                    "type": "string"
+                                                },
+                                                "lastname": {
+                                                    "type": "string"
+                                                },
+                                                "groups": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "is_activated": {
+                                                    "type": "boolean"
+                                                },
+                                                "auth_type": {
+                                                    "type": "string"
+                                                },
+                                                "user_type": {
+                                                    "type": "string"
+                                                },
+                                                "tel": {
+                                                    "type": "string"
+                                                },
+                                                "log_mode": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "user_groups": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Invalid activation code or missing parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "examples": {
+                                                "missing_uid": {
+                                                    "value": "uid is required"
+                                                },
+                                                "missing_code": {
+                                                    "value": "activation_code is required"
+                                                },
+                                                "invalid_code": {
+                                                    "value": "Invalid code please retry"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ldap/2FA": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "LDAP"
+                ],
+                "summary": "User authentication",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/2FA"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/2FA"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/ldap/research/group_user": {
+            "post": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "LDAP"
+                ],
+                "summary": "Search ldap user group ",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Usergroup"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/Usergroup"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/ldap/users/organigram": {
+            "get": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "LDAP"
+                ],
+                "summary": "Search ldap user group ",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/organigrame"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/application/all": {
+            "get": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Delete an existing application ",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Not found."
+                    }
+                }
+            }
+        },
+        "/application/create": {
+            "post": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "Application"
+                ],
+                "summary": "create a new application ",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/create_app"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/application/account/create": {
+            "post": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Delete an existing application ",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/add_acount"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/application/account/all": {
+            "post": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Get all account for an app",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/app_account"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/application/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "Application"
+                ],
+                "summary": "Delete an existing application ",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/delete_app"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/secret/safe/create": {
+            "post": {
+                "tags": [
+                    "Safe"
+                ],
+                "summary": "Create a new coffre (safe)",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CoffreCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Coffre created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CoffreResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/secret/safe/delete": {
+            "delete": {
+                "tags": [
+                    "Safe"
+                ],
+                "summary": "Delete a coffre",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CoffreDelete"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Coffre deleted successfully"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/secret/user/safe/all": {
+            "get": {
+                "tags": [
+                    "Safe"
+                ],
+                "summary": "Get list of coffres for user",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of coffres",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CoffreListResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/remote/connect": {
+            "post": {
+                "tags": [
+                    "Remote"
+                ],
+                "summary": "Provisionne Guacamole à la demande et retourne l'URL directe",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "secret_id"
+                                ],
+                                "properties": {
+                                    "secret_id": {
+                                        "type": "string",
+                                        "description": "ID du secret Axmaril"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "secret_id": "68c2cb69b9071fa2e687d7a8"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "URL de connexion Guacamole",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "connection_id": {
+                                            "type": "string"
+                                        },
+                                        "connection_url": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/secret": {
+            "post": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Créer un secret",
+                "description": "Crée un nouveau secret",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Données du secret à créer",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "safe_id",
+                                    "secret_type",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "safe_id": {
+                                        "type": "string",
+                                        "description": "ID du coffre-fort"
+                                    },
+                                    "secret_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "credentials",
+                                            "ssh",
+                                            "other",
+                                            "file"
+                                        ]
+                                    },
+                                    "app_type": {
+                                        "type": "string",
+                                        "description": "Type d'application"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Nom du secret"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Description du secret"
+                                    },
+                                    "secret": {
+                                        "type": "object",
+                                        "description": "Contenu du secret (varie selon le type)"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Secret créé avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "secret_id": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur de validation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - Token manquant ou invalide"
+                    }
+                }
+            }
+        },
+        "/secret/ssh": {
+            "post": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Créer un secret SSH",
+                "description": "Crée un secret SSH avec clé privée",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "secret",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ssh_key",
+                        "in": "formData",
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Secret SSH créé avec succès"
+                    }
+                }
+            }
+        },
+        "/secret/kmip": {
+            "post": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Créer un secret KMIP",
+                "description": "Crée un secret KMIP avec certificats",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "secret",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user_cert",
+                        "in": "formData",
+                        "type": "file"
+                    },
+                    {
+                        "name": "user_key",
+                        "in": "formData",
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Secret KMIP créé avec succès"
+                    }
+                }
+            }
+        },
+        "/secret/kmip/secret_id": {
+            "post": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Créer un secret KMIP avec ID",
+                "description": "Crée un secret KMIP en utilisant un secret_id existant",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "secret_id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Secret KMIP créé avec succès"
+                    }
+                }
+            }
+        },
+        "/secret/update": {
+            "put": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Mettre à jour un secret",
+                "description": "Met à jour un secret existant",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "secret_id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "secret": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Secret mis à jour avec succès"
+                    }
+                }
+            }
+        },
+        "/secret/ssh/changepassword": {
+            "put": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Changer le mot de passe SSH",
+                "description": "Met à jour le mot de passe d'un secret SSH",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "secret_id",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mot de passe SSH mis à jour"
+                    }
+                }
+            }
+        },
+        "/secret/reveal": {
+            "get": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Révéler un secret",
+                "description": "Affiche le contenu d'un secret déchiffré",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "secret_id",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "reveal_key",
+                        "in": "query",
+                        "type": "string",
+                        "default": "false"
+                    },
+                    {
+                        "name": "can_upload",
+                        "in": "query",
+                        "type": "string",
+                        "default": "false"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Secret révélé avec succès"
+                    }
+                }
+            }
+        },
+        "/secrets/all": {
+            "get": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Lister tous les secrets",
+                "description": "Récupère tous les secrets de l'utilisateur connecté",
+                "responses": {
+                    "200": {
+                        "description": "Liste des secrets récupérée"
+                    }
+                }
+            }
+        },
+        "/secret/delete": {
+            "delete": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Supprimer un secret",
+                "description": "Supprime définitivement un secret",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "secret_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Secret supprimé avec succès"
+                    }
+                }
+            }
+        },
+        "/secret/generate_cert": {
+            "post": {
+                "tags": [
+                    "Secret"
+                ],
+                "summary": "Générer un certificat",
+                "description": "Génère ou modifie un certificat",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "operation_type",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "create",
+                            "modify"
+                        ]
+                    },
+                    {
+                        "name": "csr_file",
+                        "in": "formData",
+                        "type": "file"
+                    },
+                    {
+                        "name": "cert_secret_id",
+                        "in": "formData",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Certificat généré/modifié avec succès"
+                    }
+                }
+            }
+        },
+        "/application/account/search": {
+            "post": {
+                "security": [
+                    {
+                        "unauthenticated": []
+                    }
+                ],
+                "tags": [
+                    "Application"
+                ],
+                "summary": "create a new application ",
+                "requestBody": {
+                    "description": "xx",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/search_account"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. Book request not found."
+                    }
+                }
+            }
+        },
+        "/kmip/generate_key": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "kmip"
+                ],
+                "summary": "example",
+                "requestBody": {
+                    "description": "example",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/generate_key"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/example"
+                        }
+                    }
+                }
+            }
+        },
+        "/kmip/delete_key": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "kmip"
+                ],
+                "summary": "example",
+                "requestBody": {
+                    "description": "example",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/delete_key"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/example"
+                        }
+                    }
+                }
+            }
+        },
+        "/kmip/revoke_key": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "kmip"
+                ],
+                "summary": "example",
+                "requestBody": {
+                    "description": "example",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/revoke_key"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/example"
+                        }
+                    }
+                }
+            }
+        },
+        "/kmip/status_key": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "kmip"
+                ],
+                "summary": "example",
+                "requestBody": {
+                    "description": "example",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/status_key"
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/components/schemas/example"
+                        }
+                    }
+                }
+            }
+        },
+        "/guacamole/auth/login": {
+            "post": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Authentifier un utilisateur Guacamole",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuacLoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Authentification réussie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuacLoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Échec de l'authentification"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/guacamole/auth/logout": {
+            "post": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Déconnexion d'un token utilisateur Guacamole",
+                "responses": {
+                    "200": {
+                        "description": "Déconnexion réussie"
+                    },
+                    "401": {
+                        "description": "Token manquant/invalid"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/guacamole/connect": {
+            "post": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Créer une connexion Guacamole (SSH/RDP)",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "secret_id"
+                                ],
+                                "additionalProperties": false,
+                                "properties": {
+                                    "protocol": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ssh",
+                                            "rdp"
+                                        ],
+                                        "default": "ssh"
+                                    },
+                                    "secret_id": {
+                                        "type": "string",
+                                        "description": "ID du secret à utiliser"
+                                    }
+                                }
+                            },
+                            "SSH via secret_id": {
+                                "value": {
+                                    "protocol": "ssh",
+                                    "secret_id": "68c4243c530a8b539a3c45b5"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/guacamole/supervise/{connection_id}": {
+  "post": {
+    "summary": "Supervision en lecture seule d'une session Guacamole active",
+    "tags": ["Guacamole"],
+    "parameters": [
+      {
+        "name": "connection_id",
+        "in": "path",
+        "required": true,
+        "schema": {"type": "string"}
+      }
+    ],
+    "responses": {
+      "200": {"description": "Lien de supervision généré"},
+      "403": {"description": "Accès refusé"},
+      "500": {"description": "Erreur serveur"}
+    }
+  }
+},
+
+        "/guacamole/connexion/ssh": {
+            "post": {
+                "tags": [
+                    "Guacamole (legacy)"
+                ],
+                "summary": "Créer une connexion SSH (legacy)",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuacLegacySSHRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Connexion SSH créée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuacConnectResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/guacamole/connexion/rdp": {
+            "post": {
+                "tags": [
+                    "Guacamole (legacy)"
+                ],
+                "summary": "Créer une connexion RDP (legacy)",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuacLegacyRDPRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Connexion RDP créée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuacConnectResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/guacamole/connexion": {
+            "get": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Lister les connexions Guacamole",
+                "responses": {
+                    "200": {
+                        "description": "Liste des connexions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "connections": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/GuacConnectionItem"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Supprimer une connexion par ID",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "connection_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Identifiant de la connexion Guacamole"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Connexion supprimée"
+                    },
+                    "404": {
+                        "description": "Connexion introuvable"
+                    }
+                }
+            }
+        },
+        "/guacamole/auth/cleanup": {
+            "delete": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Supprimer les utilisateurs Guacamole inactifs",
+                "responses": {
+                    "200": {
+                        "description": "Nettoyage effectué"
+                    }
+                }
+            }
+        },
+        "/guacamole/recordings": {
+            "get": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Lister les enregistrements",
+                "description": "Retourne la liste des enregistrements Guacamole convertis en .m4v avec métadonnées.",
+                "responses": {
+                    "200": {
+                        "description": "Liste des enregistrements",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "size_bytes": {
+                                                "type": "integer"
+                                            },
+                                            "modified_utc": {
+                                                "type": "string"
+                                            },
+                                            "download_url": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/guacamole/recordings/download/{name}": {
+            "get": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Télécharger un enregistrement",
+                "description": "Télécharge un fichier d'enregistrement vidéo .m4v par son nom.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "example": "9a1b19f6-9e7e-3d0f-be9e-23d9c28b950d.m4v"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fichier vidéo téléchargé"
+                    },
+                    "404": {
+                        "description": "Enregistrement introuvable"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/guacamole/recordings/convertibles": {
+            "get": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Lister les enregistrements convertissables (.guac ou sans extension, non encore convertis)",
+                "responses": {
+                    "200": {
+                        "description": "Liste des sources convertissables",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "base": {
+                                                        "type": "string"
+                                                    },
+                                                    "size_bytes": {
+                                                        "type": "integer"
+                                                    },
+                                                    "modified_utc": {
+                                                        "type": "string"
+                                                    },
+                                                    "convert_target": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Accès réservé aux guac-admin"
+                    }
+                }
+            }
+        },
+        "/guacamole/recordings/convert/{basename}": {
+            "post": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Convertir un flux Guacamole (basename sans extension ou .guac) en .m4v",
+                "parameters": [
+                    {
+                        "name": "basename",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "9a1b19f6-9e7e-3d0f-be9e-23d9c28b950d"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Conversion lancée"
+                    },
+                    "200": {
+                        "description": "Déjà converti"
+                    },
+                    "400": {
+                        "description": "Type non convertible (typescript)"
+                    },
+                    "404": {
+                        "description": "Flux introuvable"
+                    },
+                    "403": {
+                        "description": "Accès réservé aux guac-admin"
+                    }
+                }
+            }
+        },
+        "/guacamole/recordings/convert/{relpath}": {
+            "post": {
+                "tags": [
+                    "Guacamole"
+                ],
+                "summary": "Convertir un .guac en .m4v",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "relpath",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Chemin relatif du .guac depuis /var/lib/guacamole/recordings"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Conversion lancée"
+                    },
+                    "400": {
+                        "description": "Mauvais type de fichier"
+                    },
+                    "404": {
+                        "description": "Fichier introuvable"
+                    },
+                    "401": {
+                        "description": "Non autorisé"
+                    },
+                    "403": {
+                        "description": "Réservé au groupe guac-admin"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Enter 'Bearer <token>'"
+            }
+        },
+        "schemas": {
+            "registerRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "username": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "Ldap_Register": {
+                "type": "object",
+                "properties": {
+                    "firstname": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "managerID": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "tel": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "authentication": {
+                "type": "object",
+                "properties": {
+                    "uid": {
+                        "type": "string",
+                        "format": "ldapuid"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "2FA": {
+                        "type": "string",
+                        "format": "string",
+                        "example": "No"
+                    },
+                    "code": {
+                        "type": "string",
+                        "format": "string",
+                        "example": "ex:655554"
+                    }
+                }
+            },
+            "2FA": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                }
+            },
+            "Usergroup": {
+                "type": "object",
+                "properties": {
+                    "user_dn": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "base_srch": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "filter": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "attr": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "integer"
+                    }
+                }
+            },
+            "organigrame": {
+                "type": "object",
+                "properties": {
+                    "basedn": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "searchFilter": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "create_app": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "format": "Windows"
+                    },
+                    "type": {
+                        "type": "string",
+                        "format": "OS"
+                    }
+                }
+            },
+            "create_secret": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "secret": {
+                        "type": "object",
+                        "properties": {
+                            "hostname": {
+                                "type": "string"
+                            },
+                            "port": {
+                                "type": "string"
+                            },
+                            "username": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "ssh",
+                                    "rdp"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "hostname",
+                            "username",
+                            "password",
+                            "type"
+                        ]
+                    },
+                    "owner_uid": {
+                        "type": "string"
+                    },
+                    "secret_type": {
+                        "type": "string"
+                    },
+                    "app_type": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "secret",
+                    "owner_uid"
+                ]
+            },
+            "delete_app": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "format": "Windows"
+                    }
+                }
+            },
+            "add_acount": {
+                "type": "object",
+                "properties": {
+                    "app_id": {
+                        "type": "string",
+                        "format": "Windows"
+                    },
+                    "username": {
+                        "type": "string",
+                        "format": "OS"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "OS"
+                    }
+                }
+            },
+            "app_account": {
+                "type": "object",
+                "properties": {
+                    "owner_id": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "app_id": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "search_account": {
+                "type": "object",
+                "properties": {
+                    "owner_id": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "app_id": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "account_username": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "generate_key": {
+                "type": "object",
+                "properties": {
+                    "URL": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "database": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "collection": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "delete_key": {
+                "type": "object",
+                "properties": {
+                    "key ID": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "revoke_key": {
+                "type": "object",
+                "properties": {
+                    "key ID": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "status_key": {
+                "type": "object",
+                "properties": {
+                    "key_id": {
+                        "type": "string",
+                        "format": "string"
+                    }
+                }
+            },
+            "CoffreCreate": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "CoffreResponse": {
+                "type": "object",
+                "properties": {
+                    "safe_id": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CoffreDelete": {
+                "type": "object",
+                "properties": {
+                    "safe_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "safe_name"
+                ]
+            },
+            "CoffreListResponse": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CoffreItem"
+                        }
+                    },
+                    "total_count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "CoffreItem": {
+                "type": "object",
+                "properties": {
+                    "safe_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner_uid": {
+                        "type": "string"
+                    }
+                }
+            },
+            "GroupAction": {
+                "type": "object",
+                "properties": {
+                    "action": {
+                        "type": "string"
+                    },
+                    "group_identifier": {
+                        "type": "string"
+                    },
+                    "group_name": {
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "member_groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "parent_groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "system_permissions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "connection_permissions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "attributes": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                }
+            },
+            "GuacLoginRequest": {
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "example": "0000001"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "String123*"
+                    }
+                }
+            },
+            "GuacLoginResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Authentification réussie"
+                    },
+                    "authToken": {
+                        "type": "string"
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "example": 86400
+                    }
+                }
+            },
+            "GuacRegisterRequest": {
+                "type": "object",
+                "required": [
+                    "username"
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "example": "0000001"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "String123*",
+                        "description": "Optionnel si SSO"
+                    }
+                }
+            },
+            "GuacConnectBySecretRequest": {
+                "type": "object",
+                "required": [
+                    "secret_id",
+                    "owner_uid",
+                    "protocol"
+                ],
+                "properties": {
+                    "secret_id": {
+                        "type": "string",
+                        "example": "68c302cf1fdc7ff0bce7d370"
+                    },
+                    "owner_uid": {
+                        "type": "string",
+                        "example": "0000001"
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "enum": [
+                            "ssh",
+                            "rdp"
+                        ]
+                    }
+                }
+            },
+            "GuacLegacySSHRequest": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "hostname",
+                    "username",
+                    "password",
+                    "guac_user"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "srv-ssh-demo"
+                    },
+                    "hostname": {
+                        "type": "string",
+                        "example": "10.0.0.10"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "example": 22
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "ubuntu"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "ChangeMe123!"
+                    },
+                    "guac_user": {
+                        "type": "string",
+                        "example": "0000001"
+                    }
+                }
+            },
+            "GuacLegacyRDPRequest": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "hostname",
+                    "username",
+                    "password",
+                    "guac_user"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "srv-rdp-demo"
+                    },
+                    "hostname": {
+                        "type": "string",
+                        "example": "10.0.0.20"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "example": 3389
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "Administrator"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "ChangeMe123!"
+                    },
+                    "domain": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "width": {
+                        "type": "string",
+                        "example": "1280"
+                    },
+                    "height": {
+                        "type": "string",
+                        "example": "720"
+                    },
+                    "color_depth": {
+                        "type": "string",
+                        "example": "24"
+                    },
+                    "guac_user": {
+                        "type": "string",
+                        "example": "0000001"
+                    }
+                }
+            },
+            "GuacConnectResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Connexion créée"
+                    },
+                    "connection_url": {
+                        "type": "string",
+                        "example": "https://<GUAC>/guacamole/#/client/<ID>?token=<USER_TOKEN>"
+                    }
+                }
+            },
+            "GuacConnectionItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "123"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "srv-ssh-demo"
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "example": "ssh"
+                    }
+                }
+            }
+        }
+    }
+}

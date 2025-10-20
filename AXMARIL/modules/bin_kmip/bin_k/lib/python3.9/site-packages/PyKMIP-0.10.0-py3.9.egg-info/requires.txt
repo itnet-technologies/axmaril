@@ -1,0 +1,5 @@
+cryptography
+enum-compat
+requests
+six
+sqlalchemy

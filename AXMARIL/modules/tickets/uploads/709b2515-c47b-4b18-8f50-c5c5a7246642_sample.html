@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        /* Add your custom styles here */
+    </style>
+</head>
+<body>
+
+    <h1>Stripe Payment Form</h1>
+
+    <form id="payment-form">
+        <label for="session-id">Enter Stripe Session ID:</label>
+        <input type="text" id="session-id" name="session-id" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const stripe = Stripe('pk_test_51ISrykB32UfNeAjL3zGu7fl1GBI2orthxK80ATkbMkyWx2N49P88SmU1JWS0mjRn0FqHg3vTO6lOi4j7OXcA5XkZ00cUUFdIgf');
+
+        document.getElementById('payment-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const sessionId = document.getElementById('session-id').value;
+
+            try {
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: sessionId
+                });
+
+                if (error) {
+                    console.error(error);
+                    alert('Error redirecting to Stripe Checkout.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error redirecting to Stripe Checkout.');
+            }
+        });
+    </script>
+
+</body>
+</html>

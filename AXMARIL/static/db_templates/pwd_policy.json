@@ -1,0 +1,6 @@
+[{
+  "name": "policy_details",
+  "length": 8,
+  "strength": "[a-z],[A-Z],[0-9],[_@$]",
+  "age": "30"
+}]
