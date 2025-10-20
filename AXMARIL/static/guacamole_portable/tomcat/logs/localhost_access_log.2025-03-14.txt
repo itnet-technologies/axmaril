@@ -1,5 +1,0 @@
-10.0.1.194 - - [14/Mar/2025:12:43:02 +0100] "GET /guacamole/images/warning.svg HTTP/1.1" 200 1925
-10.0.1.194 - - [14/Mar/2025:13:20:26 +0100] "POST /guacamole/api/tokens HTTP/1.1" 200 169
-10.0.1.194 - - [14/Mar/2025:13:20:26 +0100] "GET /guacamole/images/action-icons/guac-logout.svg HTTP/1.1" 200 1464
-10.0.1.194 - - [14/Mar/2025:13:20:26 +0100] "GET /guacamole/images/action-icons/guac-home.svg HTTP/1.1" 200 505
-10.0.1.194 - - [14/Mar/2025:13:20:26 +0100] "GET /guacamole/images/circle-arrows.svg HTTP/1.1" 200 1408

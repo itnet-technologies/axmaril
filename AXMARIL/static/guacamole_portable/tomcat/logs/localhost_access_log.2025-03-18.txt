@@ -1,6 +1,0 @@
-0:0:0:0:0:0:0:1 - - [18/Mar/2025:11:01:41 +0100] "POST /guacamole/api/tokens HTTP/1.1" 200 172
-0:0:0:0:0:0:0:1 - - [18/Mar/2025:11:01:41 +0100] "POST /guacamole/api/session/data/mysql/users HTTP/1.1" 200 62
-0:0:0:0:0:0:0:1 - - [18/Mar/2025:11:01:42 +0100] "PATCH /guacamole/api/session/data/mysql/users/0000113/permissions HTTP/1.1" 204 -
-0:0:0:0:0:0:0:1 - - [18/Mar/2025:11:01:42 +0100] "POST /guacamole/api/tokens HTTP/1.1" 200 172
-0:0:0:0:0:0:0:1 - - [18/Mar/2025:11:01:42 +0100] "POST /guacamole/api/session/data/mysql/connections HTTP/1.1" 200 272
-0:0:0:0:0:0:0:1 - - [18/Mar/2025:11:01:42 +0100] "PATCH /guacamole/api/session/data/mysql/users/0000113/permissions HTTP/1.1" 204 -

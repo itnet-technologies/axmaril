@@ -1,4 +1,0 @@
-#
-# MDEV-29904 SPIDER plugin initialization fails upon startup
-#
-# restart: --plugin-load-add=ha_spider
