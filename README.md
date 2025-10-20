@@ -91,7 +91,7 @@ This project is licensed under the MIT License (or Apache 2.0, depending on your
 👥 Authors
 
 ITNET Technologies
-📧 contact@itnet-technologies.com
+📧 contact@axmaril.com
 
 🌐 https://itnet-technologies.com
 
