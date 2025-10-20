@@ -1,0 +1,80 @@
+# =============================
+# AXMARIL - .gitignore 
+# =============================
+
+# --- Environnements Python ---
+env/
+venv/
+__pycache__/
+
+# --- Builds / binaires / artefacts ---
+build/
+dist/
+*.spec
+*.deb
+*.tar.gz
+*.pyc
+*.pyo
+*.pyback
+
+# --- Logs ---
+*.log
+azumaril_log.txt
+installer.log
+startup_log.txt
+nohup.out
+
+# --- Tests / temporaires ---
+modules/test.py
+modules/temp/
+api/v2/utils/temp/
+static/temp/
+t1.py
+
+# --- Configs et secrets ---
+.env
+config.json
+config.txt
+app.json
+secret_payload.json
+static/config.json
+static/config.ini
+
+# --- Clés / certificats / licences ---
+*.pem
+*.key
+*.crt
+csr.pem
+key*
+private_key.pem
+public_key.pem
+static/private.key
+static/license_public_key.pem
+static/initiator_private.key
+static/initiator_certificate.crt
+static/certificate.crt
+static/azumaril_config.json
+static/shamir.py
+static/shamir.exe
+license.axl
+
+# --- Dossiers internes non nécessaires ---
+img/
+build/
+__pycache__/
+venv39/
+venv310/
+v10/
+v39/
+
+# --- Fichiers système / IDE ---
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# --- Autres ---
+mongod*
+AXMARIL/static/guacamole_portable/
+AXMARIL/static/mongo_server/
+AXMARIL/static/kmip/
