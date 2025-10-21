@@ -1,17 +1,23 @@
-# axmaril
-AXMARIL is a secure secret management and access control platform developed by ITNET TECHNOLOGIES. Designed for enterprises and DevSecOps teams, it enables secure storage, sharing, and auditing of API keys, certificates, passwords, and other sensitive data.
+# 🧩 AXMARIL
 
-🚀 Key Features:
-✅ Centralized secret management
-✅ Integration with OpenID Connect (OIDC)
-✅ Access logging and audit trails
-✅ Advanced encryption for maximum security
-✅ CLI interface for automation
+**AXMARIL** is a secure secret management and access control platform developed by **ITNET TECHNOLOGIES**.  
+Designed for enterprises and DevSecOps teams, it enables secure storage, sharing, and auditing of API keys, certificates, passwords, and other sensitive data.
 
-🔗 Check out the project on GitHub: AXMARIL on GitHub
+---
 
+## 🚀 Key Features
 
-## 🚀 Installation
+✅ Centralized secret management  
+✅ Integration with OpenID Connect (OIDC)  
+✅ Access logging and audit trails  
+✅ Advanced encryption for maximum security  
+✅ CLI interface for automation  
+
+🔗 **Project page:** [AXMARIL on GitHub](https://github.com/itnet-technologies/axmaril)
+
+---
+
+## ⚙️ Installation
 
 ### 1️⃣ Requirements
 
@@ -33,55 +39,55 @@ source env/bin/activate
 pip install -r requirements.txt
 
 
-⚙️ Running AXMARIL
+⚙️ Configuration
 
+Before starting AXMARIL, copy and edit the example config file:
+
+cp static/config.example.json static/config.json
+nano static/config.json
+
+
+🧩 Running AXMARIL
 🖥️ Terminal 1 — Start the main service
 
 python app.py
 
-
 ⚙️ Terminal 2 — Initialize and configure
 
-###Execute the following commands in order:
-
+Execute the following commands in order:
 
 python app.py --init
 python app.py --add-config -file static/config.json
 python app.py --unseal
 
-🔐 Environment Variables
 
-#Set the AXMARIL key:
+🔐 Environment Variables
+Set the AXMARIL key
 
 echo 'export AZUMARIL_KEYS="replace_with_your_key"' >> ~/.bashrc
 source ~/.bashrc
 
 
-###Set the internal database path:
+Set the internal database path
 
 export AZUMARIL_INITIATOR_DBPATH="/home/ubuntu/.azumaril_database"
 
-
-###Reload your environment if necessary:
-
+Reload your environment if necessary:
 
 source ~/.bashrc
 
-
-
-
 🧰 Common Commands
 
+| Command                                               | Description             |
+| ----------------------------------------------------- | ----------------------- |
+| `python app.py`                                       | Start the main service  |
+| `python app.py --init`                                | Initialize Axmaril      |
+| `python app.py --add-config -file static/config.json` | Add configuration file  |
+| `python app.py --unseal`                              | Unseal the module       |
+| `echo 'export AZUMARIL_KEYS="key"' >> ~/.bashrc`      | Set access key          |
+| `export AZUMARIL_INITIATOR_DBPATH="..."`              | Set local database path |
 
-| Command | Description |
-|----------|-------------|
-| `python app.py` | Start the main service |
-| `python app.py --init` | Initialize Axmaril |
-| `python app.py --add-config -file static/config.json` | Add configuration file |
-| `python app.py --unseal` | Unseal the module |
-| `echo 'export AZUMARIL_KEYS="key"' >> ~/.bashrc` | Set access key |
-| `export AZUMARIL_INITIATOR_DBPATH="..."` | Set local database path |
-----------------------------------------------------------------------------------
+
 
 
 📜 License
@@ -94,6 +100,7 @@ ITNET Technologies
 📧 contact@axmaril.com
 
 🌐 https://itnet-technologies.com
+
 
 🤝 Contributing
 
