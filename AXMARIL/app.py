@@ -243,6 +243,60 @@ def health_guacamole():
     except Exception as e:
         return {"guacamole": "down", "error": str(e)}, 503
 
+
+# ---- HTTP fallback server (optional) -----------------------------------------------
+def start_http_server():
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    import webbrowser
+
+    class SimpleHandler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path in ["/", "/index.html"]:
+                # page d'accueil HTML simple
+                html = """
+                <html>
+                    <head>
+                        <title>Axmaril</title>
+                        <meta charset='utf-8'/>
+                    </head>
+                    <body style="font-family:sans-serif;text-align:center;margin-top:50px;">
+                        <h1>🚀 Axmaril is running!</h1>
+                        <p>Secure API available at:
+                            <a href='https://localhost:54322/app-state' target='_blank'>
+                                https://localhost:54322/app-state
+                            </a>
+                        </p>
+                    </body>
+                </html>
+                """
+                html_bytes = html.encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(html_bytes)))
+                self.end_headers()
+                self.wfile.write(html_bytes)
+            else:
+                # redirection vers ton API HTTPS
+                self.send_response(302)
+                self.send_header("Location", "https://localhost:54322" + self.path)
+                self.end_headers()
+
+    host, port = "0.0.0.0", 8080
+    server = HTTPServer((host, port), SimpleHandler)
+    print(f"🌍 HTTP server started at http://{host}:{port}")
+    print(f"🔒 Backend available at https://localhost:{API_PORT}")
+    try:
+        webbrowser.open(f"http://localhost:{port}")
+    except Exception:
+        pass
+    server.serve_forever()
+
+
+# Lancer ce serveur HTTP dans un thread pour ne pas bloquer Gunicorn
+def start_http_thread():
+    thread = threading.Thread(target=start_http_server, daemon=True)
+    thread.start()
+
 # ---- Main --------------------------------------------------------------------------
 if __name__ == '__main__':
     class OutputRedirector:
